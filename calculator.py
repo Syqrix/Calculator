@@ -2,10 +2,10 @@ import math
 
 
 class calculator:
-    def say_hi():
+    def say_hi(self):
         print("Hello, this is calculator app. You can type q to leave.")
 
-    def first_user_number():
+    def first_user_number(self):
         while True:
             # Разобраться со страпами
             number_str = input("Enter first number: ")
@@ -23,7 +23,7 @@ class calculator:
                     continue
                 return number
 
-    def second_user_number():
+    def second_user_number(self):
         while True:
             # Разобраться со страпами
             number_str = input("Enter second number: ")
@@ -41,7 +41,7 @@ class calculator:
                     continue
                 return number
 
-    def chose_operation(first_num, second_num):
+    def chose_operation(self, first_num, second_num):
         operations = {1: "addition",
                       2: "subtraction",
                       3: "multiplication",
@@ -51,7 +51,7 @@ class calculator:
 
 
 def main():
-    app = calculator
+    app = calculator()
     app.say_hi()
     while True:
         first_number = app.first_user_number()
