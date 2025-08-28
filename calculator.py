@@ -41,13 +41,55 @@ class calculator:
                     continue
                 return number
 
-    def chose_operation(self, first_num, second_num):
+    def addition(self, first_num, second_num):
+        print(f"Answer: {first_num + second_num}")
+
+    def substraction(self, first_num, second_num):
+        print(f"Answer: {first_num - second_num}")
+
+    def multiplication(self, first_num, second_num):
+        print(f"Answer: {first_num * second_num}")
+
+    def division(self, first_num, second_num):
+        try:
+            print(f"Answer: {first_num / second_num}")
+        except ZeroDivisionError:
+            print("You can't divide by 0. Try again.")
+
+    def chose_operation(self, first_number, second_number):
         operations = {1: "addition",
                       2: "subtraction",
                       3: "multiplication",
                       4: "division"}
-        print("What kind of operation do you want to get? ")
-        print(operations)  # Продолжить работу над выборром операции
+        for key, value in operations.items():
+            print(f"{key}: {value}")
+
+        while True:
+            user_answer_str = input("Please chose the operation, please: ")
+            if not user_answer_str:
+                print("Please enter something. Try again.")
+                continue
+            if not user_answer_str.isdigit():
+                print("Only numbers! Try again.")
+                continue
+            else:
+                user_answer = int(user_answer_str)
+                if user_answer < 1 or user_answer > 4:
+                    print("Wrong value. Try again!")
+                    continue
+                else:
+                    if user_answer == 1:
+                        self.addition(first_number, second_number)
+                        return 0
+                    elif user_answer == 2:
+                        self.substraction(first_number, second_number)
+                        return 0
+                    elif user_answer == 3:
+                        self.multiplication(first_number, second_number)
+                        return 0
+                    else:
+                        self.division(first_number, second_number)
+                        return 0
 
 
 def main():
