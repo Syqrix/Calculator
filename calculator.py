@@ -1,111 +1,75 @@
-import math
-
-
-class calculator:
+class Calculator:
     def say_hi(self):
-        print("Hello, this is calculator app. You can type q to leave.")
+        print("Hello, this is calculator app. Type 'q' anytime to quit.")
 
-    def first_user_number(self):
+    def get_number(self, text="Enter number: "):
         while True:
-            # Разобраться со страпами
-            number_str = input("Enter first number: ")
+            number_str = input(text)
             if number_str.lower() == "q":
                 return None
-            else:
-                if not number_str:
-                    print("You have empty space, please repeat operation.")
-                    continue
+            try:
+                return float(number_str)  # поддержка дробей
+            except ValueError:
+                print("Please enter a valid number!")
 
-                if number_str.isdigit():
-                    number = int(number_str)
-                else:
-                    print("Please enter the number!")
-                    continue
-                return number
+    def addition(self, a, b):
+        print(f"Answer: {a + b}")
 
-    def second_user_number(self):
-        while True:
-            # Разобраться со страпами
-            number_str = input("Enter second number: ")
-            if number_str.lower() == "q":
-                return None
-            else:
-                if not number_str:
-                    print("You have empty space, please repeat operation.")
-                    continue
+    def subtraction(self, a, b):
+        print(f"Answer: {a - b}")
 
-                if number_str.isdigit():
-                    number = int(number_str)
-                else:
-                    print("Please enter the number!")
-                    continue
-                return number
+    def multiplication(self, a, b):
+        print(f"Answer: {a * b}")
 
-    def addition(self, first_num, second_num):
-        print(f"Answer: {first_num + second_num}")
-
-    def substraction(self, first_num, second_num):
-        print(f"Answer: {first_num - second_num}")
-
-    def multiplication(self, first_num, second_num):
-        print(f"Answer: {first_num * second_num}")
-
-    def division(self, first_num, second_num):
+    def division(self, a, b):
         try:
-            print(f"Answer: {first_num / second_num}")
+            print(f"Answer: {a / b}")
         except ZeroDivisionError:
             print("You can't divide by 0. Try again.")
 
-    def chose_operation(self, first_number, second_number):
-        operations = {1: "addition",
-                      2: "subtraction",
-                      3: "multiplication",
-                      4: "division"}
-        for key, value in operations.items():
-            print(f"{key}: {value}")
+    def power(self, a, b):
+        print(f"Answer: {a ** b}")
+
+    def chose_operation(self, a, b):
+        operations = {
+            1: self.addition,
+            2: self.subtraction,
+            3: self.multiplication,
+            4: self.division,
+            5: self.power}
+
+        print("\nAvailable operations:")
+        for key, func in operations.items():
+            print(f"{key}: {func.__name__}")
 
         while True:
-            user_answer_str = input("Please chose the operation, please: ")
-            if not user_answer_str:
-                print("Please enter something. Try again.")
-                continue
-            if not user_answer_str.isdigit():
+            user_answer = input("Choose operation: ")
+            if user_answer.lower() == "q":
+                return None
+            if not user_answer.isdigit():
                 print("Only numbers! Try again.")
                 continue
-            else:
-                user_answer = int(user_answer_str)
-                if user_answer < 1 or user_answer > 4:
-                    print("Wrong value. Try again!")
-                    continue
-                else:
-                    if user_answer == 1:
-                        self.addition(first_number, second_number)
-                        return 0
-                    elif user_answer == 2:
-                        self.substraction(first_number, second_number)
-                        return 0
-                    elif user_answer == 3:
-                        self.multiplication(first_number, second_number)
-                        return 0
-                    else:
-                        self.division(first_number, second_number)
-                        return 0
+            user_answer = int(user_answer)
+            if user_answer not in operations:
+                print("Wrong value. Try again!")
+                continue
+            operations[user_answer](a, b)
+            return 0
 
 
 def main():
-    app = calculator()
+    app = Calculator()
     app.say_hi()
     while True:
-        first_number = app.first_user_number()
+        first_number = app.get_number("Enter first number: ")
         if first_number is None:
-            print("Exit the app!")
             break
-        second_number = app.second_user_number()
+        second_number = app.get_number("Enter second number: ")
         if second_number is None:
-            print("Exit the app!")
             break
-
-        app.chose_operation(first_number, second_number)
+        if app.chose_operation(first_number, second_number) is None:
+            break
+    print("Thanks for using calculator! Bye!")
 
 
 if __name__ == "__main__":
