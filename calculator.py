@@ -1,4 +1,7 @@
 class Calculator:
+    def __init__(self):
+        self.history = []
+
     def say_hi(self):
         print("Hello, this is calculator app. Type 'q' anytime to quit.")
 
@@ -8,26 +11,55 @@ class Calculator:
             if number_str.lower() == "q":
                 return None
             try:
-                return float(number_str)  # поддержка дробей
+                return float(number_str)
             except ValueError:
                 print("Please enter a valid number!")
 
+    def clear_history(self):
+        while True:
+            user_answer = input(
+                "Do you really want to clear the history? y/n: ")
+            if user_answer.lower() == "y":
+                break
+            else:
+                if user_answer.lower() == "n":
+                    return None
+                if not user_answer:
+                    print("It's empty, try again!")
+                    continue
+                if user_answer.isdigit():
+                    print("Only numbers!")
+                    continue
+        self.history.clear()
+
+    def show_history(self):
+        if not self.history:
+            print("The history is empty!")
+        else:
+            for i in self.history:
+                print(i)
+
     def addition(self, a, b):
+        self.history.append(f"{a} + {b} = {a + b}")
         print(f"Answer: {a + b}")
 
     def subtraction(self, a, b):
+        self.history.append(f"{a} - {b} = {a - b}")
         print(f"Answer: {a - b}")
 
     def multiplication(self, a, b):
+        self.history.append(f"{a} * {b} = {a * b}")
         print(f"Answer: {a * b}")
 
     def division(self, a, b):
         try:
+            self.history.append(f"{a} / {b} = {a / b}")
             print(f"Answer: {a / b}")
         except ZeroDivisionError:
             print("You can't divide by 0. Try again.")
 
     def power(self, a, b):
+        self.history.append(f"{a} ** {b} = {a ** b}")
         print(f"Answer: {a ** b}")
 
     def chose_operation(self, a, b):
@@ -36,7 +68,9 @@ class Calculator:
             2: self.subtraction,
             3: self.multiplication,
             4: self.division,
-            5: self.power}
+            5: self.power,
+            6: self.show_history,
+            7: self.clear_history, }
 
         print("\nAvailable operations:")
         for key, func in operations.items():
@@ -53,7 +87,10 @@ class Calculator:
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
-            operations[user_answer](a, b)
+            if user_answer in range(6, 8):
+                operations[user_answer]()
+            else:
+                operations[user_answer](a, b)
             return 0
 
 
