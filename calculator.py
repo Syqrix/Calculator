@@ -1,3 +1,7 @@
+import math
+import fractions
+
+
 class Calculator:
     def __init__(self):
         self.history = []
@@ -62,6 +66,16 @@ class Calculator:
         self.history.append(f"{a} ** {b} = {a ** b}")
         print(f"Answer: {a ** b}")
 
+    def squart(self, a):
+        result = math.sqrt(a)
+        self.history.append(f"Squart: {a} = {result}")
+        print(f"Answer {result}")
+
+    def factorial(self, a):
+        result = math.factorial(a)
+        self.history.append(f"Factorial: {a} = {result}")
+        print(f"Answer {result}")
+
     def chose_operation(self, a, b):
         operations = {
             1: self.addition,
@@ -69,8 +83,10 @@ class Calculator:
             3: self.multiplication,
             4: self.division,
             5: self.power,
-            6: self.show_history,
-            7: self.clear_history, }
+            6: self.squart,
+            7: self.factorial,
+            8: self.show_history,
+            9: self.clear_history, }
 
         print("\nAvailable operations:")
         for key, func in operations.items():
@@ -87,8 +103,10 @@ class Calculator:
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
-            if user_answer in range(6, 8):
+            if user_answer in range(8, 10):
                 operations[user_answer]()
+            elif ((user_answer in range(6, 8)) and (a and not b)):
+                operations[user_answer](a)
             else:
                 operations[user_answer](a, b)
             return 0
