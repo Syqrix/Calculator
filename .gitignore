@@ -1,7 +1,7 @@
 # Virtual enviroment
 venv/
 .venv/
-#Cash
+#Cache
 __pycache__/
 #IDE
 .vscode/
