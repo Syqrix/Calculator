@@ -1,0 +1,11 @@
+# Virtual enviroment
+venv/
+.venv/
+#Cash
+__pycache__/
+#IDE
+.vscode/
+.idea/
+#Logs
+.env
+.log
