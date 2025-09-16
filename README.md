@@ -1,1 +1,2 @@
-I create my calculator now. Need to countinue.
+CALCULATOR PYTHON
+THis my first app i wanted to share with you. I will be glad to get feedback. I will continue inmproving myself.
