@@ -6,8 +6,12 @@ class Calculator:
     def __init__(self):
         self.history = []
 
-    def say_hi(self):
-        print("Hello, this is calculator app. Type 'q' anytime to quit.")
+    def run(self):
+        talker = TalkingUser()
+        history = History()
+        talker.say_hi()
+        self.chose_wish()
+        talker.say_bye()
 
     def get_number(self, text="Enter number: "):
         while True:
@@ -20,32 +24,6 @@ class Calculator:
                 return float(number_str)
             except ValueError:
                 print("Please enter a valid number!")
-
-    def clear_history(self):
-        while True:
-            user_answer = input(
-                "Do you really want to clear the history? y/n: ")
-            if user_answer.lower() == "y":
-                break
-            else:
-                if user_answer.lower() == "n":
-                    return None
-                if not user_answer:
-                    print("It's empty, try again!")
-                    continue
-                if user_answer.isdigit():
-                    print("Only numbers!")
-                    continue
-        self.history.clear()
-        self.chose_wish()
-
-    def show_history(self):
-        if not self.history:
-            print("The history is empty!")
-        else:
-            for i in self.history:
-                print(i)
-        self.chose_wish()
 
     def addition(self, a, b):
         try:
@@ -148,8 +126,8 @@ class Calculator:
     def chose_wish(self):
         operations = {
             1: self.start_program,
-            2: self.show_history,
-            3: self.clear_history,
+            2: history.show_history(),
+            3: history.clear_history(),
         }
 
         print("\nAvailable operations:")
@@ -211,7 +189,39 @@ class Calculator:
                 break
             if self.chose_math_operation(first_number, second_number) is None:
                 break
-        self.say_bye()
+
+
+class History(Calculator):
+    def show_history(self):
+        if not self.history:
+            print("The history is empty!")
+        else:
+            for i in self.history:
+                print(i)
+        self.chose_wish()
+
+    def clear_history(self):
+        while True:
+            user_answer = input(
+                "Do you really want to clear the history? y/n: ")
+            if user_answer.lower() == "y":
+                break
+            else:
+                if user_answer.lower() == "n":
+                    return None
+                if not user_answer:
+                    print("It's empty, try again!")
+                    continue
+                if user_answer.isdigit():
+                    print("Only numbers!")
+                    continue
+        self.history.clear()
+        self.chose_wish()
+
+
+class TalkingUser(Calculator):
+    def say_hi(self):
+        print("Hello, this is calculator app. Type 'q' anytime to quit.")
 
     def say_bye(self):
         print("Thanks for using calculator! Bye!")
@@ -219,8 +229,7 @@ class Calculator:
 
 def main():
     app = Calculator()
-    app.say_hi()
-    app.chose_wish()
+    app.run()
 
 
 if __name__ == "__main__":
