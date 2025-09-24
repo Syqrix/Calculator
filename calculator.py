@@ -4,11 +4,8 @@ import fractions
 
 class Calculator:
     def __init__(self):
-        self.history_of_inputs = []
         self.user_comunication = TalkingUser()
         self.program = Operations()
-        self.numbers = UserInput()
-        self.history = History()
 
     def run(self):
         self.user_comunication.say_hi()
@@ -25,9 +22,9 @@ class TalkingUser:
 
 
 class UserInput:
-    def get_number(self):
+    def get_number(self, text="Enter number: "):
         while True:
-            number_str = input("Enter number: ")
+            number_str = input(text)
             if number_str.lower() == "q":
                 return None
             if not number_str:
@@ -38,7 +35,10 @@ class UserInput:
                 print("Please enter a valid number!")
 
 
-class History(Calculator):
+class History:
+    def __init__(self):
+        self.history_of_inputs = []
+
     def show_history(self):
         if not self.history_of_inputs:
             print("The history is empty!")
@@ -67,6 +67,10 @@ class History(Calculator):
 
 
 class Operations(History):
+    def __init__(self):
+        self.numbers = UserInput()
+        self.history_of_inputs = []
+
     def addition(self, a, b):
         try:
             self.history_of_inputs.append(f"{a} + {b} = {a + b}")
