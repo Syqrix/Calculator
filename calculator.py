@@ -3,9 +3,9 @@ import fractions
 
 
 class Calculator:
-    def __init__(self):
-        self.user_comunication = TalkingUser()
-        self.program = Operations()
+    def __init__(self, program, user_comunication):
+        self.user_comunication = user_comunication
+        self.program = program
 
     def run(self):
         self.user_comunication.say_hi()
@@ -14,14 +14,22 @@ class Calculator:
 
 
 class TalkingUser:
+    def __init__(self, hi_words="Hello, this is calculator app. Type 'q' anytime to quit.",
+                 bye_words="Thanks for using calculator! Bye!"):
+        self.hi_words = hi_words
+        self.bye_words = bye_words
+
     def say_hi(self):
-        print("Hello, this is calculator app. Type 'q' anytime to quit.")
+        print(self.hi_words)
 
     def say_bye(self):
-        print("Thanks for using calculator! Bye!")
+        print(self.bye_words)
 
 
 class UserInput:
+    def __init__(self):
+        pass
+
     def get_number(self, text="Enter number: "):
         while True:
             number_str = input(text)
@@ -45,7 +53,6 @@ class History:
         else:
             for i in self.history_of_inputs:
                 print(i)
-        self.start_program()
 
     def clear_history(self):
         while True:
@@ -63,13 +70,12 @@ class History:
                     print("Only numbers!")
                     continue
         self.history_of_inputs.clear()
-        self.start_program()
 
 
-class Operations(History):
-    def __init__(self):
-        self.numbers = UserInput()
-        self.history_of_inputs = []
+class Operations:
+    def __init__(self, history, numbers):
+        self.history = history
+        self.numbers = numbers
 
     def addition(self, a, b):
         try:
@@ -172,8 +178,8 @@ class Operations(History):
     def start_program(self):
         operations = {
             1: self.get_input,
-            2: self.show_history,
-            3: self.clear_history,
+            2: self.history.show_history,
+            3: self.history.clear_history,
         }
 
         print("\nAvailable operations:")
@@ -238,7 +244,11 @@ class Operations(History):
 
 
 def main():
-    app = Calculator()
+    user_comunication = TalkingUser()
+    numbers = UserInput()
+    history = History()
+    program = Operations(history, numbers)
+    app = Calculator(program, user_comunication)
     app.run()
 
 
