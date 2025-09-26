@@ -54,6 +54,9 @@ class History:
             for i in self.history_of_inputs:
                 print(i)
 
+    def add_history(self, text):
+        self.history_of_inputs.append(text)
+
     def clear_history(self):
         while True:
             user_answer = input(
@@ -67,7 +70,7 @@ class History:
                     print("It's empty, try again!")
                     continue
                 if user_answer.isdigit():
-                    print("Only numbers!")
+                    print("Only letters!")
                     continue
         self.history_of_inputs.clear()
 
@@ -79,84 +82,86 @@ class Operations:
 
     def addition(self, a, b):
         try:
-            self.history_of_inputs.append(f"{a} + {b} = {a + b}")
+            self.history.add_history(f"{a} + {b} = {a + b}")
             print(f"Answer: {a + b}")
         except TypeError:
             if a:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a sum should be 2 number: Answer is {a}")
                 print(f"Answer: {int(a)}")
             if b:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a sum should be 2 number: Answer is {b}")
                 print(f"Answer: {int(b)}")
 
     def subtraction(self, a, b):
         try:
-            self.history_of_inputs.append(f"{a} - {b} = {a - b}")
+            self.history.add_history(f"{a} - {b} = {a - b}")
             print(f"Answer: {a - b}")
         except TypeError:
             if a:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a subtraction should be 2 number: Answer is {a}")
                 print(f"Answer: {int(a)}")
             if b:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a subtraction should be 2 number: Answer is {b}")
                 print(f"Answer: {int(b)}")
 
     def multiplication(self, a, b):
         try:
-            self.history_of_inputs.append(f"{a} * {b} = {a * b}")
+            self.history.add_history(f"{a} * {b} = {a * b}")
             print(f"Answer: {a * b}")
         except TypeError:
             if a:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a multiplication should be 2 number: Answer is {a}")
                 print(f"Answer: {int(a)}")
             if b:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a multiplication should be 2 number: Answer is {b}")
                 print(f"Answer: {int(b)}")
 
     def division(self, a, b):
         try:
-            self.history_of_inputs.append(f"{a} / {b} = {a / b}")
+            self.history.add_history(f"{a} / {b} = {a / b}")
             print(f"Answer: {a / b}")
         except ZeroDivisionError:
             print("You can't divide by 0. Try again.")
         except TypeError:
             if a:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a division should be 2 number: Answer is {a}")
                 print(f"Answer: {int(a)}")
             if b:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a division should be 2 number: Answer is {b}")
                 print(f"Answer: {int(b)}")
 
     def power(self, a, b):
         try:
-            self.history_of_inputs.append(f"{a} ** {b} = {a ** b}")
+            self.history.add_history(f"{a} ** {b} = {a ** b}")
             print(f"Answer: {a ** b}")
         except TypeError:
             if a:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a power should be 2 number: Answer is {a}")
                 print(f"Answer: {int(a)}")
             if b:
-                self.history_of_inputs.append(
+                self.history.add_history(
                     f"For make a power should be 2 number: Answer is {b}")
                 print(f"Answer: {int(b)}")
 
     def squart(self, a, b):
         if a:
             result = math.sqrt(a)
-            self.history_of_inputs.append(f"Squart: {a} = {int(result)}")
+            self.history.add_history(
+                f"Squart: {a} = {int(result)}")
             print(f"Answer {result}")
         if b:
             result = math.sqrt(b)
-            self.history_of_inputs.append(f"Squart: {b} = {int(result)}")
+            self.history.add_history(
+                f"Squart: {b} = {int(result)}")
             print(f"Answer {result}")
         if a and b:
             print("Only one number! Please try again")
@@ -165,12 +170,12 @@ class Operations:
         if a:
             a = int(a)
             result = math.factorial(a)
-            self.history_of_inputs.append(f"Factorial: {a} = {result}")
+            self.history.add_history(f"Factorial: {a} = {result}")
             print(f"Answer {result}")
         if b:
             b = int(b)
             result = math.factorial(b)
-            self.history_of_inputs.append(f"Factorial: {b} = {result}")
+            self.history.add_history(f"Factorial: {b} = {result}")
             print(f"Answer {result}")
         if a and b:
             print("Only one number! Please try again")
@@ -197,8 +202,11 @@ class Operations:
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
-            operations[user_answer]()
-            return 0
+            if user_answer in range(2, 3):
+                operations[user_answer]()
+                self.start_program()
+            else:
+                operations[user_answer]()
 
     def chose_math_operation(self, a, b):
         operations = {
