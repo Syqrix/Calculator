@@ -89,12 +89,9 @@ class TalkingUser:
 
 
 class UserInput:
-    def __init__(self):
-        pass
-
     def get_number(self, text="Enter number: "):
         while True:
-            number_str = input(text)
+            number_str: str = input(text)
             if number_str.lower() == "q":
                 return None
             if not number_str:
@@ -107,7 +104,7 @@ class UserInput:
 
 class History:
     def __init__(self):
-        self.history_of_inputs = []
+        self.history_of_inputs: list = []
 
     def show_history(self):
         if not self.history_of_inputs:
@@ -116,7 +113,7 @@ class History:
             for i in self.history_of_inputs:
                 print(i)
 
-    def add_history(self, text):
+    def add_history(self, text: str):
         self.history_of_inputs.append(text)
 
     def clear_history(self):
@@ -141,13 +138,13 @@ class Program:
             print(f"{key}: {func.__name__}")
 
         while True:
-            user_answer = input("Choose operation: ")
+            user_answer: str = input("Choose operation: ")
             if user_answer.lower() == "q":
                 return None
             if not user_answer.isdigit():
                 print("Only numbers! Try again.")
                 continue
-            user_answer = int(user_answer)
+            user_answer: int = int(user_answer)
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
@@ -172,13 +169,13 @@ class Program:
             print(f"{key}: {func.name()}")
 
         while True:
-            user_answer = input("Choose operation: ")
+            user_answer: str = input("Choose operation: ")
             if user_answer.lower() == "q":
                 return None
             if not user_answer.isdigit():
                 print("Only numbers! Try again.")
                 continue
-            user_answer = int(user_answer)
+            user_answer: int = int(user_answer)
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
