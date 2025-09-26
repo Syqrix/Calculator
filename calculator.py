@@ -1,16 +1,78 @@
 import math
 import fractions
+from abc import ABC, abstractmethod
 
 
-class Calculator:
-    def __init__(self, program, user_comunication):
-        self.user_comunication = user_comunication
-        self.program = program
+class Operation(ABC):
+    @abstractmethod
+    def execute(self, a, b=None):
+        pass
 
-    def run(self):
-        self.user_comunication.say_hi()
-        self.program.start_program()
-        self.user_comunication.say_bye()
+    @abstractmethod
+    def name(self):
+        pass
+
+
+class Addition(Operation):
+    def execute(self, a, b=None):
+        return a + b
+
+    def name(self):
+        return "Addition"
+
+
+class Subtract(Operation):
+    def execute(self, a, b=None):
+        return a - b
+
+    def name(self):
+        return "Subtraction"
+
+
+class Multiply(Operation):
+    def execute(self, a, b=None):
+        return a * b
+
+    def name(self):
+        return "Multiplication"
+
+
+class Divide(Operation):
+    def execute(self, a, b=None):
+        if b == 0:
+            raise ZeroDivisionError("Cannot divide by zero")
+        return a / b
+
+    def name(self):
+        return "Division"
+
+
+class Power(Operation):
+    def execute(self, a, b=None):
+        return a ** b
+
+    def name(self):
+        return "Power"
+
+
+class Sqrt(Operation):
+    def execute(self, a, b=None):
+        if b is not None:
+            raise ValueError("Sqrt accepts only one number")
+        return math.sqrt(a)
+
+    def name(self):
+        return "Square root"
+
+
+class Factorial(Operation):
+    def execute(self, a, b=None):
+        if b is not None:
+            raise ValueError("Factorial accepts only one number")
+        return math.factorial(int(a))
+
+    def name(self):
+        return "Factorial"
 
 
 class TalkingUser:
@@ -58,127 +120,14 @@ class History:
         self.history_of_inputs.append(text)
 
     def clear_history(self):
-        while True:
-            user_answer = input(
-                "Do you really want to clear the history? y/n: ")
-            if user_answer.lower() == "y":
-                break
-            else:
-                if user_answer.lower() == "n":
-                    return None
-                if not user_answer:
-                    print("It's empty, try again!")
-                    continue
-                if user_answer.isdigit():
-                    print("Only letters!")
-                    continue
         self.history_of_inputs.clear()
+        print("History has been cleared!")
 
 
-class Operations:
-    def __init__(self, history, numbers):
+class Program:
+    def __init__(self, history: History, numbers: UserInput):
         self.history = history
         self.numbers = numbers
-
-    def addition(self, a, b):
-        try:
-            self.history.add_history(f"{a} + {b} = {a + b}")
-            print(f"Answer: {a + b}")
-        except TypeError:
-            if a:
-                self.history.add_history(
-                    f"For make a sum should be 2 number: Answer is {a}")
-                print(f"Answer: {int(a)}")
-            if b:
-                self.history.add_history(
-                    f"For make a sum should be 2 number: Answer is {b}")
-                print(f"Answer: {int(b)}")
-
-    def subtraction(self, a, b):
-        try:
-            self.history.add_history(f"{a} - {b} = {a - b}")
-            print(f"Answer: {a - b}")
-        except TypeError:
-            if a:
-                self.history.add_history(
-                    f"For make a subtraction should be 2 number: Answer is {a}")
-                print(f"Answer: {int(a)}")
-            if b:
-                self.history.add_history(
-                    f"For make a subtraction should be 2 number: Answer is {b}")
-                print(f"Answer: {int(b)}")
-
-    def multiplication(self, a, b):
-        try:
-            self.history.add_history(f"{a} * {b} = {a * b}")
-            print(f"Answer: {a * b}")
-        except TypeError:
-            if a:
-                self.history.add_history(
-                    f"For make a multiplication should be 2 number: Answer is {a}")
-                print(f"Answer: {int(a)}")
-            if b:
-                self.history.add_history(
-                    f"For make a multiplication should be 2 number: Answer is {b}")
-                print(f"Answer: {int(b)}")
-
-    def division(self, a, b):
-        try:
-            self.history.add_history(f"{a} / {b} = {a / b}")
-            print(f"Answer: {a / b}")
-        except ZeroDivisionError:
-            print("You can't divide by 0. Try again.")
-        except TypeError:
-            if a:
-                self.history.add_history(
-                    f"For make a division should be 2 number: Answer is {a}")
-                print(f"Answer: {int(a)}")
-            if b:
-                self.history.add_history(
-                    f"For make a division should be 2 number: Answer is {b}")
-                print(f"Answer: {int(b)}")
-
-    def power(self, a, b):
-        try:
-            self.history.add_history(f"{a} ** {b} = {a ** b}")
-            print(f"Answer: {a ** b}")
-        except TypeError:
-            if a:
-                self.history.add_history(
-                    f"For make a power should be 2 number: Answer is {a}")
-                print(f"Answer: {int(a)}")
-            if b:
-                self.history.add_history(
-                    f"For make a power should be 2 number: Answer is {b}")
-                print(f"Answer: {int(b)}")
-
-    def squart(self, a, b):
-        if a:
-            result = math.sqrt(a)
-            self.history.add_history(
-                f"Squart: {a} = {int(result)}")
-            print(f"Answer {result}")
-        if b:
-            result = math.sqrt(b)
-            self.history.add_history(
-                f"Squart: {b} = {int(result)}")
-            print(f"Answer {result}")
-        if a and b:
-            print("Only one number! Please try again")
-
-    def factorial(self, a, b):
-        if a:
-            a = int(a)
-            result = math.factorial(a)
-            self.history.add_history(f"Factorial: {a} = {result}")
-            print(f"Answer {result}")
-        if b:
-            b = int(b)
-            result = math.factorial(b)
-            self.history.add_history(f"Factorial: {b} = {result}")
-            print(f"Answer {result}")
-        if a and b:
-            print("Only one number! Please try again")
 
     def start_program(self):
         operations = {
@@ -202,25 +151,25 @@ class Operations:
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
-            if user_answer in range(2, 3):
+            if user_answer == 2:
                 operations[user_answer]()
-                self.start_program()
+                continue
             else:
                 operations[user_answer]()
 
     def chose_math_operation(self, a, b):
         operations = {
-            1: self.addition,
-            2: self.subtraction,
-            3: self.multiplication,
-            4: self.division,
-            5: self.power,
-            6: self.squart,
-            7: self.factorial, }
+            1: Addition(),
+            2: Subtract(),
+            3: Multiply(),
+            4: Divide(),
+            5: Power(),
+            6: Sqrt(),
+            7: Factorial(), }
 
         print("\nAvailable operations:")
         for key, func in operations.items():
-            print(f"{key}: {func.__name__}")
+            print(f"{key}: {func.name()}")
 
         while True:
             user_answer = input("Choose operation: ")
@@ -233,11 +182,15 @@ class Operations:
             if user_answer not in operations:
                 print("Wrong value. Try again!")
                 continue
-            elif ((user_answer in range(6, 8)) and (a and not b)):
-                operations[user_answer](a)
+            op = operations[user_answer]
+            if isinstance(op, (Sqrt, Factorial)):
+                result = op.execute(a)
+                self.history.add_history(f"{op.name()}: {a} = {result}")
             else:
-                operations[user_answer](a, b)
-            return 0
+                result = op.execute(a, b)
+                self.history.add_history(f"{op.name()}: {a}, {b} = {result}")
+            print(f"Result = {result}")
+            self.start_program()
 
     def get_input(self):
         while True:
@@ -251,11 +204,22 @@ class Operations:
                 break
 
 
+class Calculator:
+    def __init__(self, program: Program, user_comunication: TalkingUser):
+        self.user_comunication = user_comunication
+        self.program = program
+
+    def run(self):
+        self.user_comunication.say_hi()
+        self.program.start_program()
+        self.user_comunication.say_bye()
+
+
 def main():
     user_comunication = TalkingUser()
     numbers = UserInput()
     history = History()
-    program = Operations(history, numbers)
+    program = Program(history, numbers)
     app = Calculator(program, user_comunication)
     app.run()
 
