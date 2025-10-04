@@ -78,14 +78,14 @@ class Factorial(Operation):
 class TalkingUser:
     def __init__(self, hi_words="Hello, this is calculator app. Type 'q' anytime to quit.",
                  bye_words="Thanks for using calculator! Bye!"):
-        self.hi_words = hi_words
-        self.bye_words = bye_words
+        self._hi_words = hi_words
+        self._bye_words = bye_words
 
     def say_hi(self):
-        print(self.hi_words)
+        print(self._hi_words)
 
     def say_bye(self):
-        print(self.bye_words)
+        print(self._bye_words)
 
 
 class UserInput:
