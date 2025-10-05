@@ -1,4 +1,5 @@
-from src.calculator import Addition, TalkingUser, Subtract, Multiply, Divide, Sqrt, Power, Factorial
+from src.calculator import Addition, TalkingUser, Subtract, Multiply, Divide
+from src.calculator import Sqrt, Power, Factorial, UserInput, History
 from contextlib import nullcontext as does_not_raise
 import pytest
 
@@ -119,3 +120,43 @@ class TestOperations:
             result = Factorial().execute(x)
             if res is not None:
                 assert result == pytest.approx(res, 0.1)
+
+
+class TestOtherStuff:
+    @pytest.fixture
+    def obj(self):
+        return UserInput()
+
+    def test_user_input(self, obj, monkeypatch):
+        monkeypatch.setattr("builtins.input", lambda _: "15")
+        result = obj.get_number("Enter the number")
+        assert result == 15.0
+
+
+class TestHistory:
+    @pytest.fixture
+    def obj_history(self):
+        return History()
+
+    def test_add_history(self, obj_history):
+        obj_history.add_history("Addition: 2 + 2 = 4")
+        assert "Addition: 2 + 2 = 4" in obj_history.history_of_inputs
+        assert len(obj_history.history_of_inputs) == 1
+
+    def test_show_history(self, obj_history, capsys):
+        obj_history.add_history("Multiply: 3 * 3 = 9")
+        obj_history.show_history()
+        captured = capsys.readouterr()
+        assert "Multiply: 3 * 3 = 9" in captured.out
+
+    def test_show_empty_history(self, obj_history, capsys):
+        obj_history.show_history()
+        captured = capsys.readouterr()
+        assert "The history is empty!" in captured.out
+
+    def test_clear_history(self, obj_history, capsys):
+        obj_history.add_history("Some operation")
+        obj_history.clear_history()
+        captured = capsys.readouterr()
+        assert "History has been cleared!" in captured.out
+        assert obj_history.history_of_inputs == []
